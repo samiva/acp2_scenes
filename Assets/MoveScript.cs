@@ -8,16 +8,18 @@ public class MoveScript : MonoBehaviour
     public float movementSpeed;
     public float rotationSpeed;
 
+    public bool canMove;
+
     private float mPitch, mYaw;
     private CharacterController mController;
-    
+
     // Start is called before the first frame update
     void Start()
     {
         mPitch = mYaw = 0;
         mController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
-        
+
     }
 
     // Update is called once per frame
@@ -30,13 +32,15 @@ public class MoveScript : MonoBehaviour
         mYaw = mYaw < 0 ? 360 : mYaw;
 
         transform.rotation = Quaternion.Euler(mPitch, mYaw, 0);
-        
-        var forwardMovement = transform.forward * Input.GetAxis("Vertical");
-        var sideMovement = transform.right * Input.GetAxis("Horizontal");
-        var dir = (forwardMovement + sideMovement).normalized;
-        mController.Move(dir * movementSpeed * Time.deltaTime);
+        if (canMove)
+        {
+            var forwardMovement = transform.forward * Input.GetAxis("Vertical");
+            var sideMovement = transform.right * Input.GetAxis("Horizontal");
+            var dir = (forwardMovement + sideMovement).normalized;
+            mController.Move(dir * movementSpeed * Time.deltaTime);
+        }
 
 
-        
+
     }
 }
