@@ -5,7 +5,7 @@ public class DelayedTracking : MonoBehaviour
 {  
     OVRCameraRig cam;
 
-    private int DELAY = 10; // in frames
+    private int DELAY = 100; // in frames
     private bool delayEnabled;
 
     private Queue<Quaternion> rotationQueue;
@@ -26,17 +26,6 @@ public class DelayedTracking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!delayEnabled)
-            {
-                enableDelayed(DELAY);
-            }
-            else
-            {
-                disableDelayed();
-            }
-        }
         if (delayEnabled)
         {
 			rotationQueue.Enqueue(cam.centerEyeAnchor.localRotation);
@@ -70,16 +59,16 @@ public class DelayedTracking : MonoBehaviour
         delayEnabled = true;
         startRotation = cam.centerEyeAnchor.localRotation;
         startPosition = cam.centerEyeAnchor.localPosition;
-        rotationQueue = new Queue<Quaternion>();
-        positionQueue = new Queue<Vector3>();
+        rotationQueue.Clear();
+        positionQueue.Clear();
         return;
     }
 
     public void disableDelayed()
     {
         delayEnabled = false;
-        rotationQueue = new Queue<Quaternion>();
-        positionQueue = new Queue<Vector3>();
+        rotationQueue.Clear();
+        positionQueue.Clear();
         return;
     }
 }
