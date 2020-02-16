@@ -17,6 +17,7 @@ public class ControlFlow : MonoBehaviour
     private DelayedTracking delayedTracking;
     private AngleNotification angleFadeController;
     private RawImage screen;
+    private AudioSource beep;
     private int secondsPerBeep = 1;
     private int fadeDuration = 1;
     // Start is called before the first frame update
@@ -25,6 +26,7 @@ public class ControlFlow : MonoBehaviour
         screen = GameObject.FindObjectsOfType<RawImage>()[0];
         delayedTracking = GameObject.FindObjectsOfType<OVRCameraRig>()[0].GetComponent<DelayedTracking>();
         angleFadeController = GameObject.FindObjectsOfType<OVRCameraRig>()[0].GetComponent<AngleNotification>();
+        beep = GameObject.FindObjectsOfType<OVRCameraRig>()[0].centerEyeAnchor.GetComponent<AudioSource>();
         delayEnabled = false;
         fading = true;
         fadeDirection = -1;
@@ -61,6 +63,10 @@ public class ControlFlow : MonoBehaviour
             if (screen.color.a < 1)
             {
                 fadeToBlack();
+            }
+            else
+            {
+                Application.Quit();
             }
             return;
         }
@@ -110,6 +116,7 @@ public class ControlFlow : MonoBehaviour
     void playBeep()
     {
         beeps += 1;
+        beep.Play();
         Debug.Log("beep");
     }
 
