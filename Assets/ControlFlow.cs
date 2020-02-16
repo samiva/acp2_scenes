@@ -8,7 +8,7 @@ public class ControlFlow : MonoBehaviour
 {
 
     private List<int> delays = new List<int>();
-    private string fpath = "Assets/Resources/delays.txt";
+    private string fpath = (System.IO.Directory.GetCurrentDirectory()) + "/delays.txt";
     private bool delayEnabled;
     public bool fading;
     public int fadeDirection; // 0 fade to black, -1 fading out
@@ -28,7 +28,17 @@ public class ControlFlow : MonoBehaviour
         delayEnabled = false;
         fading = true;
         fadeDirection = -1;
-        startTime = Time.time;
+        startTime = 3.0f;
+
+        if (!File.Exists(fpath))
+        {
+            StreamWriter sw = new StreamWriter(fpath);
+            sw.WriteLine("0,1,2");
+            sw.Close();
+            //delays.Add(0);
+            //delays.Add(1);
+            //delays.Add(2);
+        }
         StreamReader sr = new StreamReader(fpath);
         string[] contents = sr.ReadLine().Split(',');
         sr.Close();
