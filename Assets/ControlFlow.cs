@@ -37,9 +37,6 @@ public class ControlFlow : MonoBehaviour
             StreamWriter sw = new StreamWriter(fpath);
             sw.WriteLine("0,1,2");
             sw.Close();
-            //delays.Add(0);
-            //delays.Add(1);
-            //delays.Add(2);
         }
         StreamReader sr = new StreamReader(fpath);
         string[] contents = sr.ReadLine().Split(',');
@@ -58,7 +55,7 @@ public class ControlFlow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (delays.Count == 0)
+        if (delays.Count == 0 && !delayEnabled)
         {
             if (screen.color.a < 1)
             {
@@ -75,26 +72,18 @@ public class ControlFlow : MonoBehaviour
             fadeToBlack();
             return;
         }
-        if (Input.GetKeyDown(KeyCode.Space) && !delayEnabled)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            enableDelay();
-            if (screen.color.a >= 1)
+            if (!delayEnabled)
             {
-                startFade();
+                enableDelay();
+                if (screen.color.a >= 1)
+                {
+                    startFade();
+                }
             }
-            return;
-        }
-        if (delayEnabled && !fading)
-        {
-            angleFadeController.fadeEnabled = true;
-            if (Time.time - startTime >= secondsPerBeep)
+            else
             {
-                startTime = Time.time;
-                playBeep();
-            }
-            if (beeps >= 6)
-            {
-                //stop at 6 beep
                 disableDelay();
             }
         }

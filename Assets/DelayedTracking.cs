@@ -29,28 +29,22 @@ public class DelayedTracking : MonoBehaviour
         if (delayEnabled)
         {
 			rotationQueue.Enqueue(cam.centerEyeAnchor.localRotation);
-            positionQueue.Enqueue(cam.centerEyeAnchor.localPosition);
-            if (rotationQueue.Count < DELAY)
+            if (rotationQueue.Count <= DELAY)
             {
                 currentRotation = Quaternion.Inverse(cam.centerEyeAnchor.localRotation) * startRotation;
-                currentPosition = startPosition;
             }
             else
             {
                 currentRotation = Quaternion.Inverse(cam.centerEyeAnchor.localRotation) * rotationQueue.Dequeue();
-                currentPosition = positionQueue.Dequeue();
             }
         }
         else
         {
-            currentRotation = Quaternion.Inverse(prevRotation) * cam.centerEyeAnchor.localRotation;
-            currentPosition = cam.centerEyeAnchor.localPosition;
+            currentRotation = Quaternion.identity;//Quaternion.Inverse(prevRotation) * cam.centerEyeAnchor.localRotation;
         }
 
         cam.trackingSpace.localRotation = currentRotation;
-        cam.trackingSpace.localPosition = currentPosition;
         prevRotation = cam.centerEyeAnchor.localRotation;
-        prevPosition = cam.centerEyeAnchor.localPosition;
     }
 
     public void enableDelayed(int delay)
